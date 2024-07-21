@@ -329,4 +329,15 @@ app.listen(port, () => {
     }
     label, input {
       margin-bottom:
+```
+
+### Acknowledgements
+
+I want to express my gratitude to the following resources that were instrumental in the development of this project:
+
+- docker-grafana repository: A big thank you to the creators and maintainers of this repository. The setup and documentation provided were crucial for integrating Grafana into a Docker environment.https://github.com/jetiradoro/docker-grafana 
+
+- Caos Binario's YouTube Tutorial: I also want to extend my thanks to Caos Binario for their insightful video series on YouTube. Their clear and detailed explanations on configuring Grafana and Prometheus
+greatly helped in understanding and implementing best practices in this project. https://www.youtube.com/watch?v=PCJwJpbln6Q&list=PLC-jxfv-8E7L-w6bdX61qa4ehrrgCIh4R&ab_channel=CaosBinario
+
 
