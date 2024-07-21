@@ -1,5 +1,3 @@
-## README.md
-
 # Monitoring System with Grafana and Prometheus
 
 ## Objective
