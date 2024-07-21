@@ -1,69 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro de Datos</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monitoring App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      color: #333;
+    }
+    .container {
+      width: 50%;
+      margin: 0 auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label, input {
+      margin-bottom: 10px;
+    }
+    button {
+      padding: 10px;
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    .user-list {
+      margin-top: 20px;
+    }
+    .user-list ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    .user-list li {
+      background-color: #e9ecef;
+      margin: 5px 0;
+      padding: 10px;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Registro de Datos</h1>
-        <form id="dataForm">
-            <div class="form-group">
-                <label for="fullName">Nombre Completo:</label>
-                <input type="text" id="fullName" name="fullName" required>
-            </div>
-            <div class="form-group">
-                <label for="favoriteColor">Color Favorito:</label>
-                <input type="text" id="favoriteColor" name="favoriteColor" required>
-            </div>
-            <div class="form-group">
-                <label for="favoriteSeries">Serie Favorita:</label>
-                <input type="text" id="favoriteSeries" name="favoriteSeries" required>
-            </div>
-            <button type="submit">Registrar</button>
-        </form>
-
-        <h2>Datos Registrados</h2>
-        <ul id="dataList"></ul>
+  <div class="container">
+    <h1>Add User</h1>
+    <form action="/add-user" method="POST">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name" required>
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required>
+      <label for="favoriteGame">Favorite Game:</label>
+      <input type="text" id="favoriteGame" name="favoriteGame" required>
+      <button type="submit">Add User</button>
+    </form>
+    <div class="user-list">
+      <h2>User List</h2>
+      <ul id="userList"></ul>
     </div>
+  </div>
+  <script>
+    async function fetchUsers() {
+      const response = await fetch('/users');
+      const users = await response.json();
+      const userList = document.getElementById('userList');
+      userList.innerHTML = '';
+      users.forEach(user => {
+        const li = document.createElement('li');
+        li.textContent = `${user.name} (Username: ${user.username}, Favorite Game: ${user.favoriteGame})`;
+        userList.appendChild(li);
+      });
+    }
 
-    <script>
-        document.getElementById('dataForm').addEventListener('submit', async function (e) {
-            e.preventDefault();
-            const fullName = document.getElementById('fullName').value;
-            const favoriteColor = document.getElementById('favoriteColor').value;
-            const favoriteSeries = document.getElementById('favoriteSeries').value;
-
-            const response = await fetch('/register', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ fullName, favoriteColor, favoriteSeries })
-            });
-
-            const result = await response.json();
-            alert(result.message);
-            loadData(); // Recargar la lista después de registrar los datos
-        });
-
-        async function loadData() {
-            const response = await fetch('/data');
-            const data = await response.json();
-            const dataList = document.getElementById('dataList');
-            dataList.innerHTML = ''; // Limpiar la lista antes de llenarla
-
-            data.forEach(item => {
-                const listItem = document.createElement('li');
-                listItem.textContent = `Nombre: ${item.fullName}, Color Favorito: ${item.favoriteColor}, Serie Favorita: ${item.favoriteSeries}`;
-                dataList.appendChild(listItem);
-            });
-        }
-
-        // Cargar datos al inicio
-        loadData();
-    </script>
+    document.addEventListener('DOMContentLoaded', fetchUsers);
+  </script>
 </body>
 </html>
+
